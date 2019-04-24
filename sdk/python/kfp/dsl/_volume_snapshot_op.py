@@ -91,7 +91,7 @@ class VolumeSnapshotOp(ResourceOp):
             if not hasattr(volume, "persistent_volume_claim"):
                 raise ValueError("The volume must be referencing a PVC.")
             if hasattr(volume, "deps"):
-                deps = list(volume.deps)
+                deps = list(volume.dependent_names)
             source = V1TypedLocalObjectReference(
                 kind="PersistentVolumeClaim",
                 name=volume.persistent_volume_claim.claim_name
@@ -118,7 +118,7 @@ class VolumeSnapshotOp(ResourceOp):
             k8s_resource=k8s_resource,
             **kwargs
         )
-        self.deps.extend(deps)
+        self.dependent_names.extend(deps)
         self.snapshot = V1TypedLocalObjectReference(
             api_group="snapshot.storage.k8s.io",
             kind="VolumeSnapshot",

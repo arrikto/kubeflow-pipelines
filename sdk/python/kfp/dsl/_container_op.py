@@ -24,11 +24,9 @@ from ._metadata import ComponentMeta
 
 
 def _create_getter_setter(prop):
-    """
-    Create a tuple of getter and setter methods for a property in `Container`.
-    """
+    """Create a tuple of getter and setter methods for a property in `Container`."""
     def _getter(self):
-        return getattr(self._container, prop)
+        return getattr(self._container, prop)   
     def _setter(self, value):
         return setattr(self._container, prop, value)
     return _getter, _setter
@@ -183,7 +181,7 @@ class ContainerOp(BaseOp):
         if pvolumes:
             for mount_path, pvolume in pvolumes.items():
                 if hasattr(pvolume, "deps"):
-                    self.deps.extend(pvolume.deps)
+                    self.dependent_names.extend(pvolume.dependent_names)
                 else:
                     pvolume = PipelineVolume(volume=pvolume)
                 self.pvolumes[mount_path] = pvolume.after(self)
