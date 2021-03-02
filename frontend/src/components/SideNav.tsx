@@ -256,304 +256,320 @@ export class SideNav extends React.Component<SideNavInternalProps, SideNavState>
       inactive: sideNavColors.fgDefault,
     };
 
-    return <>{ !KFP_FLAGS.HIDE_SIDENAV && (
-      <div
-        id='sideNav'
-        className={classes(
-          css.root,
-          commonCss.flexColumn,
-          commonCss.noShrink,
-          collapsed && css.collapsedRoot,
-        )}
-      >
-        <div style={{ flexGrow: 1 }}>
-          {KFP_FLAGS.DEPLOYMENT === Deployments.MARKETPLACE && (
-            <>
+    return (
+      <>
+        {!KFP_FLAGS.HIDE_SIDENAV && (
+          <div
+            id='sideNav'
+            className={classes(
+              css.root,
+              commonCss.flexColumn,
+              commonCss.noShrink,
+              collapsed && css.collapsedRoot,
+            )}
+          >
+            <div style={{ flexGrow: 1 }}>
+              {KFP_FLAGS.DEPLOYMENT === Deployments.MARKETPLACE && (
+                <>
+                  <div
+                    className={classes(
+                      css.indicator,
+                      !page.startsWith(RoutePage.START) && css.indicatorHidden,
+                    )}
+                  />
+                  <Tooltip
+                    title={'Getting Started'}
+                    enterDelay={300}
+                    placement={'right-start'}
+                    disableFocusListener={!collapsed}
+                    disableHoverListener={!collapsed}
+                    disableTouchListener={!collapsed}
+                  >
+                    <Link
+                      id='gettingStartedBtn'
+                      to={RoutePage.START}
+                      className={commonCss.unstyled}
+                    >
+                      <Button
+                        className={classes(
+                          css.button,
+                          page.startsWith(RoutePage.START) && css.active,
+                          collapsed && css.collapsedButton,
+                        )}
+                      >
+                        <DescriptionIcon style={{ width: 20, height: 20 }} />
+                        <span className={classes(collapsed && css.collapsedLabel, css.label)}>
+                          Getting Started
+                        </span>
+                      </Button>
+                    </Link>
+                  </Tooltip>
+                </>
+              )}
               <div
                 className={classes(
                   css.indicator,
-                  !page.startsWith(RoutePage.START) && css.indicatorHidden,
+                  !page.startsWith(RoutePage.PIPELINES) && css.indicatorHidden,
                 )}
               />
               <Tooltip
-                title={'Getting Started'}
+                title={'Pipeline List'}
                 enterDelay={300}
                 placement={'right-start'}
                 disableFocusListener={!collapsed}
                 disableHoverListener={!collapsed}
                 disableTouchListener={!collapsed}
               >
-                <Link id='gettingStartedBtn' to={RoutePage.START} className={commonCss.unstyled}>
+                <Link id='pipelinesBtn' to={RoutePage.PIPELINES} className={commonCss.unstyled}>
                   <Button
                     className={classes(
                       css.button,
-                      page.startsWith(RoutePage.START) && css.active,
+                      page.startsWith(RoutePage.PIPELINES) && css.active,
                       collapsed && css.collapsedButton,
                     )}
                   >
-                    <DescriptionIcon style={{ width: 20, height: 20 }} />
+                    <PipelinesIcon
+                      color={
+                        page.startsWith(RoutePage.PIPELINES) ? iconColor.active : iconColor.inactive
+                      }
+                    />
                     <span className={classes(collapsed && css.collapsedLabel, css.label)}>
-                      Getting Started
+                      Pipelines
                     </span>
                   </Button>
                 </Link>
               </Tooltip>
-            </>
-          )}
-          <div
-            className={classes(
-              css.indicator,
-              !page.startsWith(RoutePage.PIPELINES) && css.indicatorHidden,
-            )}
-          />
-          <Tooltip
-            title={'Pipeline List'}
-            enterDelay={300}
-            placement={'right-start'}
-            disableFocusListener={!collapsed}
-            disableHoverListener={!collapsed}
-            disableTouchListener={!collapsed}
-          >
-            <Link id='pipelinesBtn' to={RoutePage.PIPELINES} className={commonCss.unstyled}>
-              <Button
+              <div
                 className={classes(
-                  css.button,
-                  page.startsWith(RoutePage.PIPELINES) && css.active,
-                  collapsed && css.collapsedButton,
+                  css.indicator,
+                  !this._highlightExperimentsButton(page) && css.indicatorHidden,
                 )}
+              />
+              <Tooltip
+                title={'Experiment List'}
+                enterDelay={300}
+                placement={'right-start'}
+                disableFocusListener={!collapsed}
+                disableHoverListener={!collapsed}
+                disableTouchListener={!collapsed}
               >
-                <PipelinesIcon
-                  color={
-                    page.startsWith(RoutePage.PIPELINES) ? iconColor.active : iconColor.inactive
-                  }
-                />
-                <span className={classes(collapsed && css.collapsedLabel, css.label)}>
-                  Pipelines
-                </span>
-              </Button>
-            </Link>
-          </Tooltip>
-          <div
-            className={classes(
-              css.indicator,
-              !this._highlightExperimentsButton(page) && css.indicatorHidden,
-            )}
-          />
-          <Tooltip
-            title={'Experiment List'}
-            enterDelay={300}
-            placement={'right-start'}
-            disableFocusListener={!collapsed}
-            disableHoverListener={!collapsed}
-            disableTouchListener={!collapsed}
-          >
-            <Link id='experimentsBtn' to={RoutePage.EXPERIMENTS} className={commonCss.unstyled}>
-              <Button
+                <Link id='experimentsBtn' to={RoutePage.EXPERIMENTS} className={commonCss.unstyled}>
+                  <Button
+                    className={classes(
+                      css.button,
+                      this._highlightExperimentsButton(page) && css.active,
+                      collapsed && css.collapsedButton,
+                    )}
+                  >
+                    <ExperimentsIcon
+                      color={
+                        this._highlightExperimentsButton(page)
+                          ? iconColor.active
+                          : iconColor.inactive
+                      }
+                    />
+                    <span className={classes(collapsed && css.collapsedLabel, css.label)}>
+                      Experiments
+                    </span>
+                  </Button>
+                </Link>
+              </Tooltip>
+              <div
                 className={classes(
-                  css.button,
-                  this._highlightExperimentsButton(page) && css.active,
-                  collapsed && css.collapsedButton,
+                  css.indicator,
+                  !this._highlightRunsButton(page) && css.indicatorHidden,
                 )}
+              />
+              <Tooltip
+                title={'Runs List'}
+                enterDelay={300}
+                placement={'right-start'}
+                disableFocusListener={!collapsed}
+                disableHoverListener={!collapsed}
+                disableTouchListener={!collapsed}
               >
-                <ExperimentsIcon
-                  color={
-                    this._highlightExperimentsButton(page) ? iconColor.active : iconColor.inactive
-                  }
-                />
-                <span className={classes(collapsed && css.collapsedLabel, css.label)}>
-                  Experiments
-                </span>
-              </Button>
-            </Link>
-          </Tooltip>
-          <div
-            className={classes(
-              css.indicator,
-              !this._highlightRunsButton(page) && css.indicatorHidden,
-            )}
-          />
-          <Tooltip
-            title={'Runs List'}
-            enterDelay={300}
-            placement={'right-start'}
-            disableFocusListener={!collapsed}
-            disableHoverListener={!collapsed}
-            disableTouchListener={!collapsed}
-          >
-            <Link id='runsBtn' to={RoutePage.RUNS} className={commonCss.unstyled}>
-              <Button
+                <Link id='runsBtn' to={RoutePage.RUNS} className={commonCss.unstyled}>
+                  <Button
+                    className={classes(
+                      css.button,
+                      this._highlightRunsButton(page) && css.active,
+                      collapsed && css.collapsedButton,
+                    )}
+                  >
+                    <DirectionsRun />
+                    <span className={classes(collapsed && css.collapsedLabel, css.label)}>
+                      Runs
+                    </span>
+                  </Button>
+                </Link>
+              </Tooltip>
+              <div
                 className={classes(
-                  css.button,
-                  this._highlightRunsButton(page) && css.active,
-                  collapsed && css.collapsedButton,
+                  css.indicator,
+                  !this._highlightArtifactsButton(page) && css.indicatorHidden,
                 )}
+              />
+              <Tooltip
+                title={'Artifacts List'}
+                enterDelay={300}
+                placement={'right-start'}
+                disableFocusListener={!collapsed}
+                disableHoverListener={!collapsed}
+                disableTouchListener={!collapsed}
               >
-                <DirectionsRun />
-                <span className={classes(collapsed && css.collapsedLabel, css.label)}>Runs</span>
-              </Button>
-            </Link>
-          </Tooltip>
-          <div
-            className={classes(
-              css.indicator,
-              !this._highlightArtifactsButton(page) && css.indicatorHidden,
-            )}
-          />
-          <Tooltip
-            title={'Artifacts List'}
-            enterDelay={300}
-            placement={'right-start'}
-            disableFocusListener={!collapsed}
-            disableHoverListener={!collapsed}
-            disableTouchListener={!collapsed}
-          >
-            <Link id='artifactsBtn' to={RoutePage.ARTIFACTS} className={commonCss.unstyled}>
-              <Button
+                <Link id='artifactsBtn' to={RoutePage.ARTIFACTS} className={commonCss.unstyled}>
+                  <Button
+                    className={classes(
+                      css.button,
+                      this._highlightArtifactsButton(page) && css.active,
+                      collapsed && css.collapsedButton,
+                    )}
+                  >
+                    <ArtifactsIcon />
+                    <span className={classes(collapsed && css.collapsedLabel, css.label)}>
+                      Artifacts
+                    </span>
+                  </Button>
+                </Link>
+              </Tooltip>
+              <div
                 className={classes(
-                  css.button,
-                  this._highlightArtifactsButton(page) && css.active,
-                  collapsed && css.collapsedButton,
+                  css.indicator,
+                  !this._highlightExecutionsButton(page) && css.indicatorHidden,
                 )}
+              />
+              <Tooltip
+                title={'Executions List'}
+                enterDelay={300}
+                placement={'right-start'}
+                disableFocusListener={!collapsed}
+                disableHoverListener={!collapsed}
+                disableTouchListener={!collapsed}
               >
-                <ArtifactsIcon />
-                <span className={classes(collapsed && css.collapsedLabel, css.label)}>
-                  Artifacts
-                </span>
-              </Button>
-            </Link>
-          </Tooltip>
-          <div
-            className={classes(
-              css.indicator,
-              !this._highlightExecutionsButton(page) && css.indicatorHidden,
-            )}
-          />
-          <Tooltip
-            title={'Executions List'}
-            enterDelay={300}
-            placement={'right-start'}
-            disableFocusListener={!collapsed}
-            disableHoverListener={!collapsed}
-            disableTouchListener={!collapsed}
-          >
-            <Link id='executionsBtn' to={RoutePage.EXECUTIONS} className={commonCss.unstyled}>
-              <Button
-                className={classes(
-                  css.button,
-                  this._highlightExecutionsButton(page) && css.active,
-                  collapsed && css.collapsedButton,
-                )}
-              >
-                <ExecutionsIcon />
-                <span className={classes(collapsed && css.collapsedLabel, css.label)}>
-                  Executions
-                </span>
-              </Button>
-            </Link>
-          </Tooltip>
-          {this.state.jupyterHubAvailable && (
-            <Tooltip
-              title={'Open Jupyter Notebook'}
-              enterDelay={300}
-              placement={'right-start'}
-              disableFocusListener={!collapsed}
-              disableHoverListener={!collapsed}
-              disableTouchListener={!collapsed}
-            >
-              <a
-                id='jupyterhubBtn'
-                href={this._HUB_ADDRESS}
-                className={commonCss.unstyled}
-                target='_blank'
-                rel='noopener'
-              >
-                <Button className={classes(css.button, collapsed && css.collapsedButton)}>
-                  <JupyterhubIcon style={{ height: 20, width: 20 }} />
-                  <span className={classes(collapsed && css.collapsedLabel, css.label)}>
-                    Notebooks
-                  </span>
-                  <OpenInNewIcon className={css.openInNewTabIcon} />
-                </Button>
-              </a>
-            </Tooltip>
-          )}
-          <hr className={classes(css.separator, collapsed && css.collapsedSeparator)} />
-          <ExternalUri
-            title={'Documentation'}
-            to={ExternalLinks.DOCUMENTATION}
-            collapsed={collapsed}
-            icon={className => <DescriptionIcon className={className} />}
-          />
-          <ExternalUri
-            title={'Github Repo'}
-            to={ExternalLinks.GITHUB}
-            collapsed={collapsed}
-            icon={className => (
-              <img src={GitHubIcon} className={classes(className, css.iconImage)} alt='Github' />
-            )}
-          />
-          <hr className={classes(css.separator, collapsed && css.collapsedSeparator)} />
-          <IconButton
-            className={classes(css.chevron, collapsed && css.collapsedChevron)}
-            onClick={this._toggleNavClicked.bind(this)}
-          >
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <div className={collapsed ? css.infoHidden : css.infoVisible}>
-          {gkeMetadata.clusterName && gkeMetadata.projectId && (
-            <Tooltip
-              title={`Cluster name: ${gkeMetadata.clusterName}, Project ID: ${gkeMetadata.projectId}`}
-              enterDelay={300}
-              placement='top-start'
-            >
-              <div className={css.envMetadata}>
-                <span>Cluster name: </span>
-                <a
-                  href={`https://console.cloud.google.com/kubernetes/list?project=${gkeMetadata.projectId}&filter=name:${gkeMetadata.clusterName}`}
-                  className={classes(css.link, commonCss.unstyled)}
-                  rel='noopener'
-                  target='_blank'
+                <Link id='executionsBtn' to={RoutePage.EXECUTIONS} className={commonCss.unstyled}>
+                  <Button
+                    className={classes(
+                      css.button,
+                      this._highlightExecutionsButton(page) && css.active,
+                      collapsed && css.collapsedButton,
+                    )}
+                  >
+                    <ExecutionsIcon />
+                    <span className={classes(collapsed && css.collapsedLabel, css.label)}>
+                      Executions
+                    </span>
+                  </Button>
+                </Link>
+              </Tooltip>
+              {this.state.jupyterHubAvailable && (
+                <Tooltip
+                  title={'Open Jupyter Notebook'}
+                  enterDelay={300}
+                  placement={'right-start'}
+                  disableFocusListener={!collapsed}
+                  disableHoverListener={!collapsed}
+                  disableTouchListener={!collapsed}
                 >
-                  {gkeMetadata.clusterName}
-                </a>
-              </div>
-            </Tooltip>
-          )}
-          {displayBuildInfo && (
-            <Tooltip
-              title={`Build date: ${displayBuildInfo.date}, Commit hash: ${displayBuildInfo.commitHash}`}
-              enterDelay={300}
-              placement={'top-start'}
-            >
-              <div className={css.envMetadata}>
-                <span>Version: </span>
-                <a
-                  href={displayBuildInfo.commitUrl}
-                  className={classes(css.link, commonCss.unstyled)}
-                  rel='noopener'
-                  target='_blank'
-                >
-                  {displayBuildInfo.tagName}
-                </a>
-              </div>
-            </Tooltip>
-          )}
-          <Tooltip title='Report an Issue' enterDelay={300} placement={'top-start'}>
-            <div className={css.envMetadata}>
-              <a
-                href={ExternalLinks.GITHUB_ISSUE}
-                className={classes(css.link, commonCss.unstyled)}
-                rel='noopener'
-                target='_blank'
+                  <a
+                    id='jupyterhubBtn'
+                    href={this._HUB_ADDRESS}
+                    className={commonCss.unstyled}
+                    target='_blank'
+                    rel='noopener'
+                  >
+                    <Button className={classes(css.button, collapsed && css.collapsedButton)}>
+                      <JupyterhubIcon style={{ height: 20, width: 20 }} />
+                      <span className={classes(collapsed && css.collapsedLabel, css.label)}>
+                        Notebooks
+                      </span>
+                      <OpenInNewIcon className={css.openInNewTabIcon} />
+                    </Button>
+                  </a>
+                </Tooltip>
+              )}
+              <hr className={classes(css.separator, collapsed && css.collapsedSeparator)} />
+              <ExternalUri
+                title={'Documentation'}
+                to={ExternalLinks.DOCUMENTATION}
+                collapsed={collapsed}
+                icon={className => <DescriptionIcon className={className} />}
+              />
+              <ExternalUri
+                title={'Github Repo'}
+                to={ExternalLinks.GITHUB}
+                collapsed={collapsed}
+                icon={className => (
+                  <img
+                    src={GitHubIcon}
+                    className={classes(className, css.iconImage)}
+                    alt='Github'
+                  />
+                )}
+              />
+              <hr className={classes(css.separator, collapsed && css.collapsedSeparator)} />
+              <IconButton
+                className={classes(css.chevron, collapsed && css.collapsedChevron)}
+                onClick={this._toggleNavClicked.bind(this)}
               >
-                Report an Issue
-              </a>
+                <ChevronLeftIcon />
+              </IconButton>
             </div>
-          </Tooltip>
-        </div>
-      </div>
-    )}</>
+            <div className={collapsed ? css.infoHidden : css.infoVisible}>
+              {gkeMetadata.clusterName && gkeMetadata.projectId && (
+                <Tooltip
+                  title={`Cluster name: ${gkeMetadata.clusterName}, Project ID: ${gkeMetadata.projectId}`}
+                  enterDelay={300}
+                  placement='top-start'
+                >
+                  <div className={css.envMetadata}>
+                    <span>Cluster name: </span>
+                    <a
+                      href={`https://console.cloud.google.com/kubernetes/list?project=${gkeMetadata.projectId}&filter=name:${gkeMetadata.clusterName}`}
+                      className={classes(css.link, commonCss.unstyled)}
+                      rel='noopener'
+                      target='_blank'
+                    >
+                      {gkeMetadata.clusterName}
+                    </a>
+                  </div>
+                </Tooltip>
+              )}
+              {displayBuildInfo && (
+                <Tooltip
+                  title={`Build date: ${displayBuildInfo.date}, Commit hash: ${displayBuildInfo.commitHash}`}
+                  enterDelay={300}
+                  placement={'top-start'}
+                >
+                  <div className={css.envMetadata}>
+                    <span>Version: </span>
+                    <a
+                      href={displayBuildInfo.commitUrl}
+                      className={classes(css.link, commonCss.unstyled)}
+                      rel='noopener'
+                      target='_blank'
+                    >
+                      {displayBuildInfo.tagName}
+                    </a>
+                  </div>
+                </Tooltip>
+              )}
+              <Tooltip title='Report an Issue' enterDelay={300} placement={'top-start'}>
+                <div className={css.envMetadata}>
+                  <a
+                    href={ExternalLinks.GITHUB_ISSUE}
+                    className={classes(css.link, commonCss.unstyled)}
+                    rel='noopener'
+                    target='_blank'
+                  >
+                    Report an Issue
+                  </a>
+                </div>
+              </Tooltip>
+            </div>
+          </div>
+        )}
+      </>
+    );
   }
 
   private _highlightExperimentsButton(page: string): boolean {
