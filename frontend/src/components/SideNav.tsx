@@ -256,7 +256,7 @@ export class SideNav extends React.Component<SideNavInternalProps, SideNavState>
       inactive: sideNavColors.fgDefault,
     };
 
-    return (
+    return <>{ !KFP_FLAGS.HIDE_SIDENAV && (
       <div
         id='sideNav'
         className={classes(
@@ -553,7 +553,7 @@ export class SideNav extends React.Component<SideNavInternalProps, SideNavState>
           </Tooltip>
         </div>
       </div>
-    );
+    )}</>
   }
 
   private _highlightExperimentsButton(page: string): boolean {
