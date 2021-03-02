@@ -19,4 +19,5 @@ export const KFP_FLAGS = {
         ? Deployments.MARKETPLACE
         : DEPLOYMENT_DEFAULT
       : DEPLOYMENT_DEFAULT,
+ HIDE_SIDENAV: window['KFP_FLAGS']['HIDE_SIDENAV']
 };
